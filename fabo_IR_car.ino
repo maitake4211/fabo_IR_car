@@ -19,14 +19,27 @@ void setup() {
 
 void loop() {
   double i = signals.value;
+  double beferSignal = 0;
 
   if (irrecv.decode(&signals)) {
     Serial.println(i);
     if (i > 17000000.00 ) {   //ovfを検知
-      Serial.println("ovf");
+      i = beferSignal;
     } else if (i == 16718055.00) {
       Car.Forward();
-      delay(2000);
+      beferSignal = i;
+    } else if (i == 16730805.00) {
+      Car.Reverse();
+      beferSignal = i;
+    } else if (i == 16734885.00) {
+      Car.TurnRight();
+      beferSignal = i;
+    } else if (i == 16716015.00) {
+      Car.TurnLeft();
+      beferSignal = i;
+    }else if(i == 16726215.00){
+      Car.Stop();
+      beferSignal = i;
     }
     delay(100);
     irrecv.resume();
